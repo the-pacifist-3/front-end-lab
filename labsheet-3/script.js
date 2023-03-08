@@ -1,7 +1,47 @@
 const ageRange = document.getElementById('age-range');
-const emailGroup= document.getElementById('email-group');
-const websiteGroup = document.getElementById('website-group');
+      const emailGroup = document.getElementById('email-group');
+      const websiteGroup = document.getElementById('website-group');
 
-ageRange.style.display='none';
-emailGroup.style.display='none';
-websiteGroup.style.display='none';
+      ageRange.style.display = 'none';
+      emailGroup.style.display = 'none';
+      websiteGroup.style.display = 'none';
+
+      document.getElementById('dob').addEventListener('change', function () {
+        const age = calculateAge(this.value);
+        if (age < 18) {
+          ageRange.style.display = 'none';
+          emailGroup.style.display = 'none';
+          websiteGroup.style.display = 'none';
+        } else if (age >= 18 && age <= 25) {
+          ageRange.style.display = 'block';
+          emailGroup.style.display = 'block';
+          websiteGroup.style.display = 'none';
+        } else {
+          ageRange.style.display = 'block';
+          emailGroup.style.display = 'block';
+          websiteGroup.style.display = 'block';
+        }
+        ageRange.querySelector('.age-value').innerHTML = age;
+        ageRange.querySelector('input').value = age;
+      });
+      document.querySelectorAll('input[required]').forEach((input) => {
+        input.addEventListener('invalid', function () {
+          this.setCustomValidity('Please fill out this field.');
+        });
+        input.addEventListener('input', function () {
+          this.setCustomValidity('');
+        });
+      });
+      function calculateAge(birthday) {
+        const today = new Date();
+        const birthDate = new Date(birthday);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+          age--;
+        }
+        return age;
+      }
+      document.getElementById('age').addEventListener('input', function () {
+        document.querySelector('.age').innerHTML = this.value;
+      });
